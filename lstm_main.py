@@ -23,7 +23,7 @@ from matplotlib import pyplot as plt
 import streamlit as st
 
 # pustaka file
-from main_eda import *;
+from lstm_func import *;
 
 ## ---------------------------------------------------------- ##
 ## - AKUISISI DATA ------------------------------------------ ##
