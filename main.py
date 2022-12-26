@@ -10,6 +10,9 @@ import numpy as np;
 # library data visualization
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+from plotly.graph_objs import Line
+
 
 # set config ui-dasboard streamlit
 st.set_page_config(
@@ -30,7 +33,7 @@ st.header("Comparison algorithm LSTM and GRU use architecture stacked and bidire
 # form configuration dataset
 col1, col2, col3 = st.columns(3, gap="small");
 with col1:
-    sb_dataset = st.selectbox('choose dataset',('BTC-USD','MSFT','AAPL','GOOG','IBM'));
+    sb_dataset = st.selectbox('choose dataset',('BTC-USD','IBM'));
 with col2:
     dt_start = st.date_input("start date");
 with col3:
@@ -38,15 +41,9 @@ with col3:
 
 # load dataset stock price
 if sb_dataset == "BTC-USD":
-    dataset = pd.read_csv("dataset/btc-usd.csv");
-elif sb_dataset == "MSFT":
-    dataset = pd.read_csv("dataset/msft.csv");
-elif sb_dataset == "AAPL":
-    dataset = pd.read_csv("dataset/aapl.csv");
-elif sb_dataset == "GOOG":
-    dataset = pd.read_csv("dataset/goog.csv");
+    dataset = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
 else:
-    dataset = pd.read_csv("dataset/ibm.csv");
+    dataset = pd.read_csv("dataset/ibm.csv", parse_dates=["Date"]);
 
 # show dataset with dataframe
 st.text("show dataset "+sb_dataset);
@@ -62,4 +59,20 @@ st.plotly_chart(
     use_container_width=True
 );
 
+# set two columns
+fig1, fig2 = st.columns(2, gap="large");
+with fig1:
+    st.text("Open price visualization");
+    st.plotly_chart(px.line(dataset, x='Date', y='Open', color_discrete_sequence=["#0051ee"]), use_container_width=True);
+with fig2:
+    st.text("Close price visualization");
+    st.plotly_chart(px.line(dataset, x='Date', y='Close', color_discrete_sequence=["#20B2AA"]), use_container_width=True);
 
+# set two columns
+fig1, fig2 = st.columns(2, gap="large");
+with fig1:
+    st.text("High price visualization");
+    st.plotly_chart(px.line(dataset, x='Date', y='High', color_discrete_sequence=["#FF8C00"]), use_container_width=True);
+with fig2:
+    st.text("Low price visualization");
+    st.plotly_chart(px.line(dataset, x='Date', y='Low', color_discrete_sequence=["#DC143C"]), use_container_width=True);
