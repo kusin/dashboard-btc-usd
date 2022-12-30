@@ -3,8 +3,6 @@ import streamlit as st;
 
 # library manipulation dataset
 import pandas as pd;
-import pandas_datareader.data as web
-#from pandas_datareader import DataReader as web
 
 # library manipulation array
 import numpy as np;
@@ -45,9 +43,5 @@ with st.container():
     col3.date_input("end date");
 
 # container-show-dataset
-with st.container():
-    #dataset = web("BTC-USD", data_source="yahoo", start='2019-09-10', end='2019-10-09');
-    df = web.DataReader('GE', 'yahoo', start='2019-09-10', end='2019-10-09')
-
-st.dataframe(df);
+# with st.container():
 
