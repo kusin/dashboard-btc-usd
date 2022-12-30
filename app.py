@@ -12,7 +12,7 @@ import plotly.express as px;
 import plotly.graph_objects as go;
 
 # import function any file .py
-from func_plot import plot_line;
+from func_plot import plot_multiple_line;
 
 # set config ui-dasboard streamlit
 st.set_page_config(
@@ -32,31 +32,44 @@ dataset = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
 
 # container-header
 with st.container():
-    st.markdown("## Comparison LSTM and GRU use architecture stacked and bidirectional");
+    st.header("Comparison LSTM and GRU use architecture stacked and bidirectional");
 
-# container-dataset
+# container-price-OHLC
 with st.container():
-
-    # set columns with col-3 row-1
+    
+    # define columns with col-4 row-1
     col1, col2, col3, col4 = st.columns(4);
 
-    # columns col-1
-    col1.selectbox("choose algorithm",("LSTM-RNN", "GRU-RNN"));
+    # columns-1 open price
+    col1.metric(
+        label="Open Price",
+        value="$"+"{:,.2f}".format(dataset["Open"].iloc[-1]),
+        delta="0,00%"
+    );
 
-    # columns col-2
-    col2.selectbox("choose dataset",("BTC-USD", "IBM"));
+    # columns-2 high price
+    col2.metric(
+        label="High price",
+        value="$"+"{:,.2f}".format(dataset["High"].iloc[-1]),
+        delta="0,00%");
 
-    # columns col-3
-    col3.date_input("start date");
+    # columns-3 low price
+    col3.metric(
+        label="Low price",
+        value="$"+"{:,.2f}".format(dataset["Low"].iloc[-1]),
+        delta="0,00%");
 
-    # columns col-4
-    col4.date_input("end date");
+    # columns-4 close price
+    col4.metric(
+        label="Close price",
+        value="$"+"{:,.2f}".format(dataset["Close"].iloc[-1]),
+        delta="0,00%");
+
+    # description dataset
+    st.text("* Update dataset 2022-11-30");
 
 # container-show-dataset
 with st.container():
-    st.subheader("Data visualization time series");
-
-    # plot line sst nina 3.4
     st.plotly_chart(
-        plot_line(dataset, "Date", "Open", "#3457D5"), use_container_width=True
+        plot_multiple_line(dataset, "Date", ["Open", "High", "Low", "Close"]), use_container_width=True
     );

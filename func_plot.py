@@ -12,13 +12,29 @@ import plotly.express as px;
 import plotly.graph_objects as go;
 
 # func plot line with plotly graph objects
-def plot_line(data, value_x, value_y, nm_color):
+def plot_multiple_line(data, value_x, value_y):
     
-    # show plot
-    fig = go.Figure(
-        data = [
-            go.Scatter(x=data[value_x], y=data[value_y], line_color=nm_color)
-        ]
+    # define a new figure
+    fig = go.Figure();
+
+    # add plot with loop
+    for list_y in value_y:
+        fig.add_trace(
+            go.Scatter(
+                x=data[value_x], y=data[list_y], name=list_y, mode="lines"
+            )
+        );
+
+    # update plot
+    fig.update_layout(
+        xaxis_title="Year",
+        yaxis_title="Price USD",
+        legend=dict(
+            title=None,
+            orientation="h",
+            x=0.5, xanchor="center",
+            y=1, yanchor="bottom"
+        )
     );
     
     # return value

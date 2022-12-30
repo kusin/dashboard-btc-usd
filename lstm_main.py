@@ -6,7 +6,6 @@ import pandas as pd
 from pandas import concat
 from pandas import read_csv
 from pandas import read_excel
-from pandas_datareader import DataReader
 
 # pustaka untuk madnipulasi data-array
 import numpy as np
