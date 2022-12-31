@@ -31,7 +31,7 @@ from lstm_func import *;
 def load_dataset():
     
     # load dataset
-    df = pd.read_csv("D:/latihan-time-series/dataset/BTC-USD.csv");
+    df = pd.read_csv("dataset/btc-usd.csv");
     
     # set index tanggal
     df = df.set_index("Date");
