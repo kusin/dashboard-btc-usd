@@ -54,7 +54,15 @@ def plot_grouped_bar(data, list):
         );
     
     # update plot
-    fig.update_layout(barmode='group');
+    fig.update_layout(
+        barmode="group",
+        legend=dict(
+            title=None,
+            orientation="h",
+            x=0.5, xanchor="center",
+            y=1, yanchor="bottom"
+        )
+    );
 
     # return value
     return fig;
