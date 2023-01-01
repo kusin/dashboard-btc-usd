@@ -67,9 +67,13 @@ def plot_grouped_bar(data, list):
     # return value
     return fig;
 
+# func aggregation data
 def func_agg_year(data, nm_start, nm_end):
 
+    # set dataset to spesific year
     data = data.iloc[(data.index >= nm_start) & (data.index <= nm_end)];
+    
+    # aggregation data
     data = data.resample("M").sum();
 
     # return value
