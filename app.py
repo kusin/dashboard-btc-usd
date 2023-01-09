@@ -35,7 +35,7 @@ dataset = dataset.set_index("Date");
 
 # container-header
 with st.container():
-    st.header("Comparison LSTM and GRU use architecture stacked and bidirectional");
+    st.header("Aplikasi Prediksi Harga Bitcoin Karya SMK Triguna Utama");
 
 # container-price-OHLC
 with st.container():
