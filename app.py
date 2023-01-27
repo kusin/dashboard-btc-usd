@@ -35,7 +35,7 @@ dataset = dataset.set_index("Date");
 
 # container-header
 with st.container():
-    st.header("Aplikasi Prediksi Harga Bitcoin Karya SMK Triguna Utama");
+    st.header("Prediction stock price with algorithm LSTM-RNN and GRU-RNN");
 
 # container-price-OHLC
 with st.container():
