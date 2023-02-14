@@ -1,3 +1,7 @@
+# --------------------------------------------------------------- #
+# -- List library ----------------------------------------------- #
+# --------------------------------------------------------------- #
+
 # library ui-dashboard
 import streamlit as st;
 
@@ -14,6 +18,11 @@ import plotly.graph_objects as go;
 # import function any file .py
 from func_plot import *;
 
+
+# --------------------------------------------------------------- #
+# -- setting configuration -------------------------------------- #
+# --------------------------------------------------------------- #
+
 # set config ui-dasboard streamlit
 st.set_page_config(
     page_title="My Dasboard",
@@ -27,15 +36,37 @@ st.set_page_config(
     }
 );
 
+
+# --------------------------------------------------------------- #
+# -- data acquisition ------------------------------------------- #
+# --------------------------------------------------------------- #
+
 # load dataset
 dataset = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
 
 # set index date
 dataset = dataset.set_index("Date");
 
+
+# --------------------------------------------------------------- #
+# -- container-sidebar ------------------------------------------ #
+# --------------------------------------------------------------- #
+with st.sidebar:
+    add_algorithm = st.selectbox(
+        "choose algorithm ",
+        ("lstm-rnn", "gru-rnn")
+    );
+
+    add_dataset = st.selectbox(
+        "choose dataset ",
+        ("btc-usd", "eth-usd")
+    );
+
+    st.button("Submit");
+
 # container-header
 with st.container():
-    st.header("Prediction stock price with algorithm LSTM-RNN and GRU-RNN");
+    st.header("Prediction stock price with algorithm LSTM and GRU");
 
 # container-price-OHLC
 with st.container():
@@ -71,14 +102,8 @@ with st.container():
         delta="0,00%"
     );
 
-# container-show-dataset
-with st.container():
-
     # description dataset
     st.text("* Update dataset 2022-11-30");
-
-    # show dataset
-    st.dataframe(dataset, use_container_width=True);
 
 # container-plot-dataset
 with st.container():
