@@ -116,7 +116,7 @@ with st.container():
         plot_multiple_line(dataset, ["Open", "High", "Low", "Close"]), use_container_width=True
     );
 
-# cointainer
+# cointainer-eda
 with st.container():
 
     # description sub-header
