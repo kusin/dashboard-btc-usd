@@ -12,8 +12,6 @@ import numpy as np;
 import plotly.express as px;
 import plotly.graph_objects as go;
 
-from Model import *;
-
 
 # --------------------------------------------------------------- #
 # -- Main Function ---------------------------------------------- #
@@ -39,8 +37,8 @@ if __name__ == "__main__":
     # -- container-sidebar ------------------------------------------ #
     # --------------------------------------------------------------- #
     with st.sidebar:
-        add_pages = st.selectbox("Choose Pages ", ("Dashboard", "Exploratory Data Analysis", "Model Predictions"));
-        add_algorithm = st.selectbox("Choose Algorithm ", ("LSTM-RNN", "GRU-RNN"));
+        st.info("Main Menu");
+        add_pages = st.selectbox(label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
     
     # --------------------------------------------------------------- #
     # -- container-wrapper ------------------------------------------ #
@@ -49,13 +47,5 @@ if __name__ == "__main__":
 
         # container-header
         with st.container():
-            st.header("Prediction stock price with algorithm LSTM and GRU");
+            st.header("Stock price predictions with algorithm LSTM and GRU");
 
-        # container-content
-        with st.container():
-            if add_pages == "Dashboard":
-                Dashboard();
-            elif add_pages == "Exploratory Data Analysis":
-                EDA();
-            else:
-                Model();
