@@ -13,7 +13,6 @@ import plotly.graph_objects as go;
 # call method from other file
 from class_dataset import *;
 from class_visualization import *;
-from visualization import *;
 
 
 # --------------------------------------------------------------- #
