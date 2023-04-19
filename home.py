@@ -38,7 +38,9 @@ if __name__ == "__main__":
     # --------------------------------------------------------------- #
     with st.sidebar:
         st.info("Main Menu");
-        add_pages = st.selectbox(label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
+        st.selectbox(
+            label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed"
+        );
     
     # --------------------------------------------------------------- #
     # -- container-wrapper ------------------------------------------ #
