@@ -13,6 +13,7 @@ import plotly.graph_objects as go;
 # call method from other file
 from class_dataset import *;
 from class_visualization import *;
+from visualization import *;
 
 
 # --------------------------------------------------------------- #
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------- #
     with st.sidebar:
         st.info("Main Menu");
-        st.selectbox(label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
+        pages = st.selectbox(label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
     
         avs.add_vertical_space(3);
         st.success("Sponsorship");
@@ -71,7 +72,7 @@ if __name__ == "__main__":
 
             # description dataset
             st.text("* Update dataset 2022-11-30");
-        
+
         # container-dataframe
         with st.container():
             st.dataframe(data= dataset.sort_values('Date', ascending=False), use_container_width=True);
@@ -117,5 +118,3 @@ if __name__ == "__main__":
                 ),
                 use_container_width=True
             );
-          
-            

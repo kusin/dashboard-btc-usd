@@ -16,7 +16,7 @@ import plotly.express as px;
 import plotly.graph_objects as go;
 
 # import function any file .py
-from other.func_plot import *;
+from app_2 import *;
 
 
 # --------------------------------------------------------------- #
@@ -42,7 +42,7 @@ st.set_page_config(
 # --------------------------------------------------------------- #
 
 # load dataset
-dataset = pd.read_csv("../dataset/btc-usd.csv", parse_dates=["Date"]);
+dataset = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
 
 # set index date
 dataset = dataset.set_index("Date");

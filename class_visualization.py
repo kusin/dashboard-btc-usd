@@ -25,7 +25,7 @@ class visualization:
         );
 
         # update plot
-        fig.update_layout(title_text=title, title_x=0.5);
+        fig.update_layout(title_text=title);
 
         # return values
         return fig;
