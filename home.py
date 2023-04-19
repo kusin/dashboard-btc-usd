@@ -1,6 +1,5 @@
 # library ui-dashboard
 import streamlit as st;
-from streamlit_option_menu import option_menu
 
 # library manipulation dataset
 import pandas as pd;
@@ -11,6 +10,9 @@ import numpy as np;
 # library data visualization
 import plotly.express as px;
 import plotly.graph_objects as go;
+
+# call method from other file
+from class_dataset import *;
 
 
 # --------------------------------------------------------------- #
@@ -47,7 +49,14 @@ if __name__ == "__main__":
     # --------------------------------------------------------------- #
     with st.container():
 
+        # load dataset
+        df = dataset.get_dataset();
+
         # container-header
         with st.container():
             st.header("Stock price predictions with algorithm LSTM and GRU");
+        
+        # container-dataframe
+        with st.container():
+            st.dataframe(data= df.sort_values('Date', ascending=False), use_container_width=True);
 

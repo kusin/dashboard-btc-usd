@@ -1,12 +1,14 @@
-# library ui-dashboard
-import streamlit as st;
+# declaration of library
+import pandas as pd;
+import numpy as np;
 
 
-def Dashboard():
-    st.write("Dashboard");
+# define class dataset
+class dataset:
 
-def Model():
-    st.write("Model");
-
-def EDA():
-    st.write("EDA")
+    # method read dataset
+    def get_dataset():
+        
+        # call dataset
+        df = pd.read_csv("dataset/btc-usd.csv");
+        return df;
