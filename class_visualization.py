@@ -31,6 +31,6 @@ class visualization:
         return fig;
 
     def ploting():
-
+        fig = "";
         return fig;
     

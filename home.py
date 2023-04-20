@@ -1,5 +1,6 @@
 # library ui-dashboard
 import streamlit as st;
+from streamlit_extras import add_vertical_space as avs
 
 # library manipulation dataset
 import pandas as pd;
@@ -43,6 +44,7 @@ if __name__ == "__main__":
         st.info("Main Menu");
         pages = st.selectbox(label="Choose Pages", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
     
+        avs.add_vertical_space(3);
         st.success("Sponsorship");
         st.markdown("- UIN Syarif Hidayatullah Jakarta");
         st.markdown("- Institut Pertanian Bogor");
@@ -80,6 +82,7 @@ if __name__ == "__main__":
         with st.container():
 
             # header container
+            avs.add_vertical_space(2);
             st.success("Exploratory Data Analysis");
 
             # define columns with col-2 row-1
