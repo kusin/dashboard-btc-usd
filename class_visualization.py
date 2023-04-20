@@ -29,4 +29,8 @@ class visualization:
 
         # return values
         return fig;
+
+    def ploting():
+
+        return fig;
     

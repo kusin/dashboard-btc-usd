@@ -9,6 +9,8 @@ import numpy as np;
 # library data visualization
 import plotly.express as px;
 import plotly.graph_objects as go;
+from matplotlib import pyplot
+from matplotlib import pyplot as plt
 
 # call method from other file
 from class_dataset import *;
@@ -40,7 +42,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------- #
     with st.sidebar:
         st.info("Main Menu");
-        pages = st.selectbox(label="", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
+        pages = st.selectbox(label="Choose Pages", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
     
         avs.add_vertical_space(3);
         st.success("Sponsorship");
@@ -78,6 +80,10 @@ if __name__ == "__main__":
 
         # container-visualization
         with st.container():
+
+            # header container
+            avs.add_vertical_space(2);
+            st.success("Exploratory Data Analysis");
 
             # define columns with col-2 row-1
             col1, col2= st.columns(2);
