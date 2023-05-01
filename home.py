@@ -59,7 +59,7 @@ if __name__ == "__main__":
         
         # container-header
         with st.container():
-            st.markdown("<h1 style='color:#9AC66C;'>Stock price predictions with algorithm LSTM and GRU</h1>",unsafe_allow_html=True);
+            st.markdown("<h1 style='color:#9AC66C; text-align:center;'>Stock price predictions with algorithm LSTM and GRU</h1>",unsafe_allow_html=True);
         
         # container-OHLC
         with st.container():
@@ -123,3 +123,5 @@ if __name__ == "__main__":
                 ),
                 use_container_width=True
             );
+
+            st.text(dataset.dtypes);
