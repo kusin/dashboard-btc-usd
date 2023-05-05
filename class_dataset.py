@@ -10,7 +10,8 @@ class dataset:
     def get_dataset():
         
         # call dataset
-        df = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
+        df = pd.read_csv("dataset/btc-usd_v1.csv", parse_dates=["Date"]);
+        df = df.set_index("Date");
 
         # return values
         return df;

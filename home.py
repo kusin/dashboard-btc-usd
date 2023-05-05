@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 # call method from other file
 from class_dataset import *;
 from class_visualization import *;
+from class_pre_processing import *;
 
 
 # --------------------------------------------------------------- #
@@ -40,14 +41,14 @@ if __name__ == "__main__":
     # --------------------------------------------------------------- #
     # -- container-sidebar ------------------------------------------ #
     # --------------------------------------------------------------- #
-    with st.sidebar:
-        st.info("Main Menu");
-        pages = st.selectbox(label="Choose Pages", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
+    # with st.sidebar:
+    #     st.info("Main Menu");
+    #     pages = st.selectbox(label="Choose Pages", options=("Dashboard", "Exploratory Data Analysis", "Model Predictions"), label_visibility="collapsed");
     
-        avs.add_vertical_space(3);
-        st.success("Sponsorship");
-        st.markdown("- UIN Syarif Hidayatullah Jakarta");
-        st.markdown("- Institut Pertanian Bogor");
+    #     avs.add_vertical_space(3);
+    #     st.success("About US");
+    #     st.markdown("- Copyright by Aryajaya Alamsyah, S.Kom");
+        
         
     # --------------------------------------------------------------- #
     # -- container-wrapper ------------------------------------------ #
@@ -77,19 +78,19 @@ if __name__ == "__main__":
         # container-dataframe
         with st.container():
             st.dataframe(data= dataset.sort_values('Date', ascending=False), use_container_width=True);
+            avs.add_vertical_space(2);
 
         # container-visualization
         with st.container():
 
             # header container
-            avs.add_vertical_space(2);
             st.success("Exploratory Data Analysis");
 
             # define columns with col-2 row-1
             col1, col2= st.columns(2);
             col1.plotly_chart(
-                visualization.time_series(
-                    dataset["Date"],
+                visualization.time_series1(
+                    dataset.index.values,
                     dataset["Open"],
                     "Open Price",
                     "blue"
@@ -97,8 +98,8 @@ if __name__ == "__main__":
                 use_container_width=True
             );
             col2.plotly_chart(
-                visualization.time_series(
-                    dataset["Date"],
+                visualization.time_series1(
+                    dataset.index.values,
                     dataset["Close"],
                     "Close Price",
                     "green"
@@ -106,8 +107,8 @@ if __name__ == "__main__":
                 use_container_width=True
             );
             col1.plotly_chart(
-                visualization.time_series(
-                    dataset["Date"],
+                visualization.time_series1(
+                    dataset.index.values,
                     dataset["High"],
                     "High Price",
                     "orange"
@@ -115,8 +116,8 @@ if __name__ == "__main__":
                 use_container_width=True
             );
             col2.plotly_chart(
-                visualization.time_series(
-                    dataset["Date"],
+                visualization.time_series1(
+                    dataset.index.values,
                     dataset["Low"],
                     "Low Price",
                     "red"
@@ -124,4 +125,43 @@ if __name__ == "__main__":
                 use_container_width=True
             );
 
-            st.text(dataset.dtypes);
+        # container-pre-processing
+        with st.container():
+
+            # header container
+            st.success("Data Pre-processing");
+            
+            # form pre-processing
+            with st.form("my_form"):
+                cb_featured = st.selectbox("Choose a feature",("--", "Open", "High", "Low", "Close"));
+                cb_normalized = st.selectbox("Choose method of normalized data", ('--', 'Min-Max'));
+                cb_splitted = st.selectbox("Choose percentage of splitted data", ('--', '80-20'));
+                cb_look_back = st.selectbox("Choose period look back", ('--', '60'));
+                btn_process = st.form_submit_button("Submit");
+
+            if btn_process:
+                
+                # 1. feature selection
+                dataset = dataset.filter([cb_featured]);
+                data = dataset.values;
+
+                # 2. normalized data
+                scaled_data = PreProcessing.normalization(data);
+
+                # 3. splitted data
+                train_data, test_data = PreProcessing.splitting(scaled_data, 0.80, 0.20);
+
+                # 4. supervised learning
+                look_back = 60;
+                x_train, y_train = PreProcessing.create_dataset(look_back, train_data);
+                x_test, y_test = PreProcessing.create_dataset(look_back, test_data);
+
+                #. 5. reshape input to be [samples, time steps, features]
+                x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1));
+                x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1));
+
+                st.write(x_train.shape, x_test.shape)
+
+                st.pyplot(
+                    visualization.time_series2(dataset.index.values, scaled_data, "red"), use_container_width=True
+                );
