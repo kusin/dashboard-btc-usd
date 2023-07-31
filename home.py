@@ -128,65 +128,6 @@ if __name__ == "__main__":
                 cb_look_back = st.selectbox("Choose period look back", ('--', '60'));
                 btn_process = st.form_submit_button("Submit");
 
-<<<<<<< HEAD
-                if btn_process:
-                    # 1. feature selection
-                    dataset = dataset.filter([cb_featured]);
-                    data = dataset.values;
-
-                    # 2. normalized data
-                    scaled_data = PreProcessing.normalization(data);
-
-                    # 3. splitted data
-                    train_data, test_data = PreProcessing.splitting(scaled_data, 0.80, 0.20);
-
-                    # 4. supervised learning
-                    look_back = 60;
-                    x_train, y_train = PreProcessing.create_dataset(look_back, train_data);
-                    x_test, y_test = PreProcessing.create_dataset(look_back, test_data);
-
-                    #. 5. reshape input to be [samples, time steps, features]
-                    x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1));
-                    x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1));
-            
-                    # ---------------------------------------------------------------------
-                    # the result pre-processing -------------------------------------------
-                    # ---------------------------------------------------------------------
-                    col1, col2= st.columns(2, gap="large");
-                    col1.plotly_chart(
-                        visualization.time_series1(
-                            dataX=dataset.index.values,
-                            dataY=np.array(scaled_data).flatten(),
-                            title="Plot result normalized data",
-                            color="blue"
-                        ), use_container_width=True 
-                    );
-                    col2.markdown("##### The information of pre-processing data");
-                    col2.text("1. feature selection is : "+str(cb_featured));
-                    col2.text("2. normalized data is : "+str(cb_normalized));
-                    col2.text("3. splitted data by : "+str(cb_splitted)+"%");
-                    col2.text("4. look back perioded by : "+str(cb_look_back)+" timestep");
-                    col2.text("5. reshape input to be [samples, time steps, features]");
-                    col2.text(str(x_train.shape) +" "+str(x_test.shape));
-            
-            avs.add_vertical_space(2);
-        
-        # container model-predictions
-        with st.container():
-
-            # header container
-            st.success("Model Predictions");
-
-            # form model-predictions
-            with st.form("my_form2"):
-                cb_algorithm = st.selectbox("Choose a random seed",("--", "stacked bidirectional lstm", "stacked bidirectional gru"));
-                btn_process = st.form_submit_button("Submit");
-
-                    
-
-                
-                
-=======
             if btn_process:
                 
                 # 1. feature selection
@@ -213,4 +154,3 @@ if __name__ == "__main__":
                 st.pyplot(
                     visualization.time_series2(dataset.index.values, scaled_data, "red"), use_container_width=True
                 );
->>>>>>> parent of 13e725610 (-)
