@@ -42,7 +42,7 @@ st.set_page_config(
 # --------------------------------------------------------------- #
 
 # load dataset
-dataset = pd.read_csv("dataset/btc-usd.csv", parse_dates=["Date"]);
+dataset = pd.read_csv("dataset/btc-usd_v1.csv", parse_dates=["Date"]);
 
 # set index date
 dataset = dataset.set_index("Date");
