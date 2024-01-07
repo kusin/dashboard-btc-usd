@@ -1,17 +1,17 @@
-# declaration of library
-import pandas as pd;
-import numpy as np;
+# library ui-dashboard
+import streamlit as st;
 
+# library manipulation dataset
+import pandas as pd;
+
+# library manipulation array
+import numpy as np;
 
 # define class dataset
 class dataset:
-
+    
     # method read dataset
+    @staticmethod
     def get_dataset():
-        
-        # call dataset
-        df = pd.read_csv("dataset/btc-usd_v1.csv", parse_dates=["Date"]);
-        df = df.set_index("Date");
-
-        # return values
-        return df;
+        df = pd.read_csv("dataset/BTC-USD.csv")
+        return df

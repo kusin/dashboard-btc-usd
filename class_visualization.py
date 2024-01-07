@@ -1,48 +1,49 @@
-# declaration of library
+# library ui-dashboard
+import streamlit as st;
+
+# library manipulation dataset
 import pandas as pd;
+
+# library manipulation array
 import numpy as np;
+
+# library data visualization
 import plotly.express as px;
 import plotly.graph_objects as go;
-from matplotlib import pyplot as plt
 
+# call method from other file
+from class_dataset import dataset
 
-# define class visualization
+# define class
 class visualization:
 
-    # property visualization
-    x = "";
-    y = "";
+    def line_plot(df):
 
-    def time_series1(dataX, dataY, title, color):
+        # create a plot
+        fig = go.Figure()
         
-        # define a new figure
-        fig = go.Figure();
-
-        # add plot time series
-        fig.add_trace(
-            go.Scatter(
-                x=dataX, y=dataY, mode='lines', line_color=color,
+        # add lineplot with graph object
+        for column in df.columns[1:]:
+            fig.add_trace(
+                go.Scatter(
+                    x=df["Date"],y=df[column], mode='lines', name=column
+                )
             )
-        );
-
-        # update plot
-        fig.update_layout(title_text=title);
-
-        # return values
-        return fig;
-
-    def time_series2(dataX, dataY, color):
         
-        # define a new figure
-        fig = plt.figure(figsize=(20,6));
+        # add colors on lineplot
+        colorscale = px.colors.diverging.Portland_r
+        for i, trace in enumerate(fig.data):
+            trace.update(line=dict(color=colorscale[i]))
 
-        # make a time series plot
-        plt.plot(dataX, dataY, color=color, label="label", linewidth=2);
-
-        # make are labels
-        plt.legend(loc="best");
-        plt.grid(True);
+        # update layout lineplot
+        fig.update_layout(
+            title = "History of bitcoin price",
+            xaxis_title = "",
+            yaxis_title = "",
+            xaxis=dict(tickangle=0),
+            yaxis=dict(tickangle=0),
+            legend=dict(title='', orientation='h', yanchor='top', y=1.1, xanchor='center', x=0.5),
+        )
 
         # return values
-        return fig;
-    
+        return fig
