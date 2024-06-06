@@ -37,33 +37,40 @@ with col1:
   st.dataframe(dataset, use_container_width=True)
 with col2:
   st.info("Data Visualization")
-  st.plotly_chart(line_plot(dataset), use_container_width=True)
+  st.plotly_chart(line_plot1(dataset), use_container_width=True)
 
 # split three columns
 col1, col2, col3 = st.columns([0.2,0.2,0.6], gap="small")
+
+# column of predictions of BTC-USD
 with col1:
   st.info("Predictions of BTC-USD Price")
   form = st.form("my-form");
   algorithms = form.selectbox("Choose an algorithm", ("SBi-LSTM", "SBi-GRU"), index=None)
   submitted = form.form_submit_button(label="Submit", type="primary", use_container_width=False)
+
+# column of evaluation models
 with col2:
   st.info("Evaluation Model")
   st.caption("Execution time is about 5 minutes")
   if algorithms and submitted:
+    # process of preprocessing data
     scaler, scaled, x_train, y_train, x_test, y_test = preprocessing(dataset)
+    # process of predictions BTC-USD
     history, predictions = get_models(algorithms, x_train, y_train, x_test, y_test)
+    # process evaluation models
     r, p_value, mae, rmse, mape = evaluate_models(y_test, predictions)
-    # st.markdown(f"##### R    : {r}")
-    # st.markdown(f"##### RMSE : {rmse}")
-    # st.markdown(f"##### MAPE : {mape}")
-    st.text(f"RMSE: {rmse}")
+    st.text(f"R    : {r}")
+    st.text(f"RMSE : {rmse}")
+    st.text(f"MAPE : {mape}")
+    
+# column of results predictions
 with col3:
   st.info("Results of Prediction BTC-USD")
   if algorithms and submitted:
+    # inverse scaler predictions
+    inv_y_test = scaler.inverse_transform(y_test.reshape(-1,1))
+    inv_predictions = scaler.inverse_transform(predictions.reshape(-1,1))
     st.plotly_chart(
-      lineplot_matplotlib2(
-        line1=y_test, label1="actual data",
-        line2=predictions, label2="results predictions"
-      ), use_container_width=True
+      line_plot2(algorithms,inv_y_test, inv_predictions), use_container_width=True
     )
-    

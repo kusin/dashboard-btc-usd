@@ -2,10 +2,10 @@
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-# -----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------
 
 # func line plot
-def line_plot(df):
+def line_plot1(df):
 
   # add lineplot with graph object
   fig = go.Figure()
@@ -31,38 +31,34 @@ def line_plot(df):
 
   # return values
   return fig
+# ----------------------------------------------------------------------------------------
 
+# func line plot
+def line_plot2(algorithms, ytrue, ypred):
 
-def lineplot_matplotlib1(df, nm_labels):
+  # add lineplot with graph object
+  fig = go.Figure()
+  fig.add_trace(
+    go.Scatter(
+      y=ytrue, mode='lines', line_color="blue", name="actual data"
+    )
+  )
+  fig.add_trace(
+    go.Scatter(
+      y=ypred, mode='lines', line_color="red", name="results predictions"
+    )
+  )
 
-    # create lineplot
-    fig, ax = plt.subplots(figsize = (8,4))
-    ax.plot(df, label=nm_labels, linewidth=2.5)
-    
-    # set label-labels
-    ax.set_title("", fontsize=12)
-    ax.set_xlabel("", fontsize=10)
-    ax.set_ylabel("", fontsize=10)
-    ax.legend(loc="best")
-    ax.grid(True)
-    
-    # show lineplot
-    return fig
+  # update layout lineplot
+  fig.update_layout(
+    title = "Results of Prediction using "+str(algorithms)+" algorithm",
+    # xaxis_title = "",
+    # yaxis_title = "",
+    # xaxis=dict(tickangle=0),
+    # yaxis=dict(tickangle=0),
+    legend=dict(title='', orientation='h', yanchor='top', y=1, xanchor='center', x=0.5),
+  )
 
-def lineplot_matplotlib2(line1, label1, line2, label2):
+  return fig
 
-    # create lineplot
-    fig, ax = plt.subplots(figsize = (8,4))
-    ax.plot(line1, color="tab:blue", label=label1, linewidth=2)
-    ax.plot(line2, color="tab:red", label=label2, linewidth=2)
-    
-    # set label-labels
-    ax.set_title("", fontsize=12)
-    ax.set_xlabel("", fontsize=10)
-    ax.set_ylabel("", fontsize=10)
-    ax.legend(loc="best")
-    ax.grid(True)
-    
-    # show lineplot
-    return fig
 # ----------------------------------------------------------------------------------------

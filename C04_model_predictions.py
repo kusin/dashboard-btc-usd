@@ -12,6 +12,7 @@ from sklearn.metrics import mean_absolute_percentage_error
 
 # libs manipulations array
 import numpy as np
+import streamlit as st
 # ----------------------------------------------------------------------------------------
 
 # func model predictions
@@ -39,14 +40,15 @@ def get_models(algorithm, x_train, y_train, x_test, y_test):
   
   # 2. compile models
   model.compile(optimizer='adamax', loss='mean_squared_error')
-
-  # fitting models
-  history = model.fit(
-    x_train, y_train,
-    batch_size=16, epochs=3, verbose="auto", 
-    validation_data=(x_test, y_test),
-    use_multiprocessing=False, shuffle=False
-  )
+  
+  with st.spinner('Training the model...'):
+    # fitting models
+    history = model.fit(
+      x_train, y_train,
+      batch_size=16, epochs=2, verbose="auto", 
+      validation_data=(x_test, y_test),
+      use_multiprocessing=False, shuffle=False
+    )
 
   # 3. predict models
   predictions = model.predict(x_test)
