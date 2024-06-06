@@ -182,7 +182,7 @@ with col2:
     # fit network
     history = model.fit(
       x_train, y_train,
-      batch_size=16, epochs=1, verbose=1, 
+      batch_size=16, epochs=50, verbose="auto", 
       validation_data=(x_test, y_test),
       use_multiprocessing=False, shuffle=False
     )
