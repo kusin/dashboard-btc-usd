@@ -161,6 +161,7 @@ with col2:
       tf.keras.backend.clear_session()
       model = tf.keras.Sequential([
         tf.keras.layers.Bidirectional(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1))),
+        tf.keras.layers.Dropout(0.05),
         tf.keras.layers.Bidirectional(LSTM(units=50, return_sequences=False)),
         tf.keras.layers.Dropout(0.05),
         tf.keras.layers.Dense(1)
@@ -171,6 +172,7 @@ with col2:
       tf.keras.backend.clear_session()
       model = tf.keras.Sequential([
         tf.keras.layers.Bidirectional(GRU(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1))),
+        tf.keras.layers.Dropout(0.05),
         tf.keras.layers.Bidirectional(GRU(units=50, return_sequences=False)),
         tf.keras.layers.Dropout(0.05),
         tf.keras.layers.Dense(1)
@@ -180,12 +182,13 @@ with col2:
     model.compile(optimizer='adamax', loss='mean_squared_error')
     
     # fit network
-    history = model.fit(
-      x_train, y_train,
-      batch_size=16, epochs=50, verbose="auto", 
-      validation_data=(x_test, y_test),
-      use_multiprocessing=False, shuffle=False
-    )
+    with st.spinner('Training the model...'):
+      history = model.fit(
+        x_train, y_train,
+        batch_size=16, epochs=50, verbose="auto", 
+        validation_data=(x_test, y_test),
+        use_multiprocessing=True, shuffle=False
+      )
     
     # process predictions
     predictions = model.predict(x_test)
@@ -228,7 +231,7 @@ with col3:
   if algorithms and submitted:
     st.plotly_chart(
       line_plot(
-        df=dataset, title="Results of Prediction Using "+str(algorithms)+" Algorithms",
+        df=results, title="Results of Prediction Using "+str(algorithms)+" Algorithms",
       ),use_container_width=True
     )
 
