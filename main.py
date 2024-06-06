@@ -68,9 +68,6 @@ with col2:
 with col3:
   st.info("Results of Prediction BTC-USD")
   if algorithms and submitted:
-    # inverse scaler predictions
-    inv_y_test = scaler.inverse_transform(y_test.reshape(-1,1))
-    inv_predictions = scaler.inverse_transform(predictions.reshape(-1,1))
     st.plotly_chart(
       line_plot2(algorithms,inv_y_test, inv_predictions), use_container_width=True
     )

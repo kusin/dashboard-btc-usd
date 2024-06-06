@@ -24,6 +24,7 @@ from math import sqrt
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_absolute_percentage_error
+import scipy.stats as sc
 
 # config web streamlit
 st.set_page_config(
@@ -41,25 +42,18 @@ st.set_page_config(
 # --------------------------------------------------------------------------------------- #
 # data visualization -------------------------------------------------------------------- #
 # --------------------------------------------------------------------------------------- #
-def line_plot(df):
+def line_plot(df, title):
 
-  # create a plot
-  fig = go.Figure()
-        
   # add lineplot with graph object
+  fig = go.Figure()
   for column in df.columns[1:]:
     fig.add_trace(
       go.Scatter(x=df["Date"],y=df[column], mode='lines', name=column)
     )
-        
-  # # add colors on lineplot
-  # colorscale = px.colors.diverging.Portland_r
-  # for i, trace in enumerate(fig.data):
-  #   trace.update(line=dict(color=colorscale[i]))
 
   # update layout lineplot
   fig.update_layout(
-    title = "Time series plot of BTC-USD price",
+    title = title,
     xaxis_title = "",
     yaxis_title = "",
     xaxis=dict(tickangle=0),
@@ -79,8 +73,6 @@ def create_dataset(look_back, dataset):
     
   # for loop for create supervised learning
   for i in range(look_back, len(dataset)):
-        
-    # insert value X and Y 
     dataX.append(dataset[i-look_back:i, 0])
     dataY.append(dataset[i, 0])
         
@@ -106,4 +98,138 @@ with col1:
   st.dataframe(dataset, use_container_width=True)
 with col2:
   st.info("Data Visualization")
-  st.plotly_chart(line_plot(dataset), use_container_width=True)
+  st.plotly_chart(
+    line_plot(
+      df=dataset, title="TimeSeries plot of BTC-USD Price",
+    ), use_container_width=True
+  )
+  
+# --------------------------------------------------------------------------------------- #
+
+# split three columns
+col1, col2, col3 = st.columns([0.2,0.2,0.6], gap="small")
+
+# column of predictions of BTC-USD
+with col1:
+  st.info("Predictions of BTC-USD Price")
+  form = st.form("my-form");
+  algorithms = form.selectbox("Choose an algorithm", ("SBi-LSTM", "SBi-GRU"), index=None)
+  submitted = form.form_submit_button(label="Submit", type="primary", use_container_width=False)
+
+# column of evaluation models
+with col2:
+  st.info("Evaluation Model")
+  st.caption("Execution time is about 5 minutes")
+  
+  # process prediction with 7 step
+  # step 1 - choose a features 
+  # step 2 - normalized min-max
+  # step 3 - splitting data
+  # step 4 - supervised learning
+  # step 5 - model predictions
+  # step 6 - denormalize dataset
+  # step 7 - evaluation models
+  if algorithms and submitted:
+    # step 1 - choose a features
+    data = dataset.filter(['Close'])
+    data = data.values
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 2 - normalized min-max
+    # normalize features
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled = scaler.fit_transform(np.array(data))
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 3 - splitting data
+    train_data, test_data = train_test_split(scaled, train_size=0.80, test_size=0.20, shuffle=False)
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 4 - supervised learning
+    look_back = 60
+    x_train, y_train = create_dataset(look_back, train_data)
+    x_test, y_test = create_dataset(look_back, test_data)
+
+    # reshape input to be [samples, time steps, features]
+    x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+    x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1))
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 5 - model predictions
+    # The LSTM architecture
+    if algorithms == "SBi-LSTM":
+      tf.keras.backend.clear_session()
+      model = tf.keras.Sequential([
+        tf.keras.layers.Bidirectional(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1))),
+        tf.keras.layers.Bidirectional(LSTM(units=50, return_sequences=False)),
+        tf.keras.layers.Dropout(0.05),
+        tf.keras.layers.Dense(1)
+      ])
+    
+    # The GRU-RNN architecture
+    if algorithms == "SBi-GRU":
+      tf.keras.backend.clear_session()
+      model = tf.keras.Sequential([
+        tf.keras.layers.Bidirectional(GRU(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1))),
+        tf.keras.layers.Bidirectional(GRU(units=50, return_sequences=False)),
+        tf.keras.layers.Dropout(0.05),
+        tf.keras.layers.Dense(1)
+      ])
+    
+    # compile models
+    model.compile(optimizer='adamax', loss='mean_squared_error')
+    
+    # fit network
+    history = model.fit(
+      x_train, y_train,
+      batch_size=16, epochs=1, verbose=1, 
+      validation_data=(x_test, y_test),
+      use_multiprocessing=False, shuffle=False
+    )
+    
+    # process predictions
+    predictions = model.predict(x_test)
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 6 - denormalize dataset
+    # inverse value test predictions
+    y_close = scaler.inverse_transform(scaled)
+    y_test = scaler.inverse_transform(y_test.reshape(-1, 1))
+    predictions = scaler.inverse_transform(predictions.reshape(-1, 1))
+
+    # shift y_test
+    y_test_inv = np.empty_like(scaled)
+    y_test_inv[:, :] = np.nan
+    y_test_inv[(len(dataset) - y_test.shape[0]):len(dataset), :] = y_test
+
+    # shift predictions
+    predictions_inv = np.empty_like(scaled)
+    predictions_inv[:, :] = np.nan
+    predictions_inv[(len(dataset) - predictions.shape[0]):len(dataset), :] = predictions
+
+    # concate date, close, y_test, y_pred
+    date = dataset[["Date"]]
+    y_close = pd.DataFrame(y_close, columns=["Close Price"])
+    y_test_inv = pd.DataFrame(y_test_inv, columns=["Testing data"])
+    predictions_inv = pd.DataFrame(predictions_inv, columns=["Prediction"])
+    results = pd.concat([date, y_close, y_test_inv, predictions_inv], axis=1)
+    # ------------------------------------------------------------------------------------------------------------- #
+
+    # step 8 - evaluation models
+    r = np.round(sc.mstats.pearsonr(y_test, predictions)[0],4)
+    mape = np.round(mean_absolute_percentage_error(y_test, predictions)*100, 4)
+    # ------------------------------------------------------------------------------------------------------------- #
+    st.text(f"R    : {r}")
+    st.text(f"MAPE : {mape}")
+
+# column of results predictions
+with col3:
+  st.info("Results of Prediction BTC-USD")
+  if algorithms and submitted:
+    st.plotly_chart(
+      line_plot(
+        df=dataset, title="Results of Prediction Using "+str(algorithms)+" Algorithms",
+      ),use_container_width=True
+    )
+
+    
