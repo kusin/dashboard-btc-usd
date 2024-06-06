@@ -1,7 +1,5 @@
 # library manipulation dataset
 import pandas as pd
-
-# library manipulation array
 import numpy as np
 
 # import library streamlit
@@ -13,21 +11,13 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # library data preprocessing
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
-# library deep learning
+# lib neural network algorithms
 import tensorflow as tf
-from keras.utils import Sequence
-from keras.models import Sequential
-from keras.layers import SimpleRNN
 from keras.layers import LSTM
 from keras.layers import GRU
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import TimeDistributed
-from keras.layers import Bidirectional
-from keras.optimizers import Adam, Adamax, RMSprop, SGD
 
 # library evaluations model
 from math import sqrt
