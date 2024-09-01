@@ -1,11 +1,7 @@
-## Prediction of BTC-USD using algorithms SB-LSTM-RNN and SB-GRU-RNN
+## Prediction of cryptocurrency and stock price using neural network
 
 ### Demo project online
 https://tensorflow-btc-usd-v2.streamlit.app/
-
-![image](https://github.com/kusin/tensorflow-btc-usd/blob/main/img/hasil%20prediksi%20full%20-%20SB-LSTM-RNN.png)
-
-![image](https://github.com/kusin/tensorflow-btc-usd/blob/main/img/hasil_prediksi_full%20_SB_GRU_RNN.jpg)
 
 ### Hardware Testing
 - HP Probook 440 G6
@@ -22,10 +18,12 @@ https://tensorflow-btc-usd-v2.streamlit.app/
 - OS Ubuntu 22.04 LTS
 
 ### Library Requirements
-- Python 3.11.8
+- Python 3.11.9
 - Pandas 2.1.4
 - Numpy 1.26.4
-- Matplotlib 3.8.0
-- Scikit-Learn 1.2.2
+- Matplotlib 3.8.4
+- Seaborn 0.13.2
+- Plotly  5.22.0
+- Scikit-Learn 1.5.1
 - Keras 2.14.0
 - Tensorflow 2.14.0
