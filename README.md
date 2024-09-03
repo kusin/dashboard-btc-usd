@@ -1,7 +1,7 @@
 ## Prediction of cryptocurrency and stock price using neural network
 
 ### Demo project online
-https://tensorflow-btc-usd-v2.streamlit.app/
+https://dashboard-btc-usd.streamlit.app/
 
 ### Hardware Testing
 - HP Probook 440 G6
