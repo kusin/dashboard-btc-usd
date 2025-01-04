@@ -45,12 +45,18 @@ with col1:
 
 # columns - information crypto
 with col2:
-  st.info("Top Five Cryptocurrency on Market")
+  st.info("Top Three Cryptocurrency on Market")
   st.write("1. Bitcoin (BTC)")
   st.write("2. Ethereum (EHT)")
-  st.write("3. Tether (USDT)")
-  st.write("4. Binance Coin (BNB)")
-  st.write("5. Solana (SOL)")
+  st.write("3. Binance Coin (BNB)")
+
+
+# columns - information crypto
+with col2:
+  st.info("Top Three Stock Price on Market")
+  st.write("1. Google (GOOG)")
+  st.write("2. Intel (INTC)")
+  st.write("3. Apple (AAPL)")
 # --------------------------------------------------------------------------------------------------------------
 
 # columns - results dataset
